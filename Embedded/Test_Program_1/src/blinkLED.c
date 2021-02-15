@@ -1,6 +1,9 @@
 #include "common.h"
 #include "pinDefs.h"
-#include "globalHandles.h"
+#include "globalVariables.h"
+
+static const char * LOG_MISC = "MISC";
+static const char * LOG_LED = "LED";
 
 void blinkLED( void * params ) {
     ESP_LOGI( LOG_MISC, "blinkLED Started!" );
