@@ -3,21 +3,28 @@
 #define VARIABLES_IMPL
 #include "globalVariables.h"
 #include "tasksInclude.h"
+#include "WiFiHelper.h"
+#include "MQTTHelper.h"
+#include "nvs_flash.h"
 
 static const char * LOG_MISC = "MISC";
 static const char * LOG_LED = "LED";
 static const char * LOG_LDR = "LDR";
+static const char * LOG_WIFI = "WIFI";
+static const char * LOG_MQTT = "MQTT";
 
 static void initialiseLogs( void ) {
     esp_log_level_set( "*", ESP_LOG_WARN );
     esp_log_level_set( LOG_MISC, ESP_LOG_INFO );
-    esp_log_level_set( LOG_LED, ESP_LOG_INFO );
-    esp_log_level_set( LOG_LDR, ESP_LOG_INFO );
+    esp_log_level_set( LOG_LED, ESP_LOG_WARN );
+    esp_log_level_set( LOG_LDR, ESP_LOG_WARN );
+    esp_log_level_set( LOG_WIFI, ESP_LOG_INFO );
+    esp_log_level_set( LOG_MQTT, ESP_LOG_INFO );
 }
 
 static void startTasks( void ) {
-    xTaskCreatePinnedToCore( &ledState, "ledState", 2048, NULL, 1, &ledStateTaskHandle, 1 );
-    xTaskCreatePinnedToCore( &blinkLED, "blinkLED", 2048, NULL, 1, NULL, 1 );
+    // xTaskCreatePinnedToCore( &ledState, "ledState", 2048, NULL, 1, &ledStateTaskHandle, 1 );
+    // xTaskCreatePinnedToCore( &blinkLED, "blinkLED", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &ldrRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
 }
 
@@ -45,9 +52,20 @@ static void setupQueues( void ) {
 }
 
 void app_main() {
+     //Initialize NVS
+    esp_err_t ret = nvs_flash_init();
+    if ( ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND ) {
+      ESP_ERROR_CHECK( nvs_flash_erase() );
+      ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK( ret );
+
+
     initialiseLogs();
 
     ESP_LOGI( LOG_MISC, "Hello World!\n" );
+    initialiseWifi();
+    initialiseMQTT();
 
     setupQueues();
 

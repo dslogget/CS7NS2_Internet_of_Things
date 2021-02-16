@@ -1,7 +1,7 @@
 #ifndef GLOBAL_VARIABLES_H_GUARD
 #define GLOBAL_VARIABLES_H_GUARD
 #include "common.h"
-#include "freertos/queue.h"
+
 
 // example for a queue of queueName
 // #define QUEUE_NAME_MESSAGE_LENGTH 512
@@ -12,11 +12,13 @@
 // extern QueueHandle_t queueName;
 extern TaskHandle_t ledStateTaskHandle;
 extern esp_adc_cal_characteristics_t * adc1_chars;
+extern esp_mqtt_client_handle_t mqttClient;
 #else
 // final example
 // QueueHandle_t serialOutQueue = NULL;
 TaskHandle_t ledStateTaskHandle = NULL;
 esp_adc_cal_characteristics_t * adc1_chars = NULL;
+esp_mqtt_client_handle_t mqttClient = NULL;
 #undef VARIABLES_IMPL
 #endif
 

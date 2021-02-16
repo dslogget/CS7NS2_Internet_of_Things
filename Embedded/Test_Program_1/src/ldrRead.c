@@ -9,6 +9,7 @@ static const char * LOG_LDR = "LDR";
 
 void ldrRead( void * params ) {
     uint32_t adc_reading;
+    char buff[ 50 ] = { 0 };
     while( 1 ) {
         // Average of 5 samples reading
         adc_reading = 0;
@@ -18,7 +19,9 @@ void ldrRead( void * params ) {
         adc_reading /= NUMSAMPLES;
         uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, adc1_chars);
         ESP_LOGI( LOG_LDR, "Raw: %d\tVoltage: %dmV\n", adc_reading, voltage );
+        sprintf( buff, "%dmV", voltage );
+        esp_mqtt_client_publish( mqttClient, "homeAutomation/LDR1", buff, 0, 1, 0 );
 
-        vTaskDelay( 1000 / portTICK_PERIOD_MS );
+        vTaskDelay( 30 * 1000 / portTICK_PERIOD_MS );
     }
 }
