@@ -1,7 +1,7 @@
 # CS7NS2 Internet of Things Group 5 Project
 
 ## Circuit Setup
-Attach the ESP-32 Devkit-C V4 to the components outlined in the schematic in [KiCad Schematics/CurrentSchematic.pdf](KiCad Schematics/CurrentSchematic.pdf)
+Attach the ESP-32 Devkit-C V4 to the components outlined in the schematic in [KiCad Schematics/CurrentSchematic.pdf](KiCad%20Schematics/CurrentSchematic.pdf)
 
 ## Building and uploading the program to the ESP-32
 - Open the platformio project in your preferred platformio platform (eg Visual Studio Code)
