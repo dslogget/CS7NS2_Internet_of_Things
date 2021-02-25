@@ -3,5 +3,6 @@
 
 void blinkLED( void * params );
 void ledState( void * params );
+void ldrRead( void * params );
 
 #endif

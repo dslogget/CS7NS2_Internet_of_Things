@@ -1,0 +1,173 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Group5:ESP32_DevkitC_V4 U1
+U 1 1 60379BBB
+P 5600 3100
+F 0 "U1" H 5625 3825 50  0000 C CNN
+F 1 "ESP32_DevkitC_V4" H 5625 3734 50  0000 C CNN
+F 2 "" H 5600 3650 50  0001 C CNN
+F 3 "" H 5600 3650 50  0001 C CNN
+	1    5600 3100
+	1    0    0    -1  
+$EndComp
+Text GLabel 5000 3100 0    50   Input ~ 0
+LDR
+Text GLabel 6250 3800 2    50   Output ~ 0
+LED
+$Comp
+L power:+3V3 #PWR0101
+U 1 1 60384205
+P 5000 2600
+F 0 "#PWR0101" H 5000 2450 50  0001 C CNN
+F 1 "+3V3" V 5015 2728 50  0000 L CNN
+F 2 "" H 5000 2600 50  0001 C CNN
+F 3 "" H 5000 2600 50  0001 C CNN
+	1    5000 2600
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR0102
+U 1 1 60384B5E
+P 6250 2600
+F 0 "#PWR0102" H 6250 2350 50  0001 C CNN
+F 1 "GND" V 6255 2472 50  0000 R CNN
+F 2 "" H 6250 2600 50  0001 C CNN
+F 3 "" H 6250 2600 50  0001 C CNN
+	1    6250 2600
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6038D397
+P 3500 3050
+AR Path="/6037F47C/6038D397" Ref="R?"  Part="1" 
+AR Path="/6038D397" Ref="R1"  Part="1" 
+F 0 "R1" H 3570 3096 50  0000 L CNN
+F 1 "100k" H 3570 3005 50  0000 L CNN
+F 2 "" V 3430 3050 50  0001 C CNN
+F 3 "~" H 3500 3050 50  0001 C CNN
+	1    3500 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Sensor_Optical:LDR03 R?
+U 1 1 6038D39D
+P 3500 3450
+AR Path="/6037F47C/6038D39D" Ref="R?"  Part="1" 
+AR Path="/6038D39D" Ref="R2"  Part="1" 
+F 0 "R2" H 3570 3496 50  0000 L CNN
+F 1 "LDR03" H 3570 3405 50  0000 L CNN
+F 2 "OptoDevice:R_LDR_10x8.5mm_P7.6mm_Vertical" V 3675 3450 50  0001 C CNN
+F 3 "http://www.elektronica-componenten.nl/WebRoot/StoreNL/Shops/61422969/54F1/BA0C/C664/31B9/2173/C0A8/2AB9/2AEF/LDR03IMP.pdf" H 3500 3400 50  0001 C CNN
+	1    3500 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6038D3A3
+P 3500 3600
+AR Path="/6037F47C/6038D3A3" Ref="#PWR?"  Part="1" 
+AR Path="/6038D3A3" Ref="#PWR0103"  Part="1" 
+F 0 "#PWR0103" H 3500 3350 50  0001 C CNN
+F 1 "GND" H 3505 3427 50  0000 C CNN
+F 2 "" H 3500 3600 50  0001 C CNN
+F 3 "" H 3500 3600 50  0001 C CNN
+	1    3500 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 3200 3500 3250
+Wire Wire Line
+	3500 3250 3900 3250
+Connection ~ 3500 3250
+Wire Wire Line
+	3500 3250 3500 3300
+Text GLabel 3900 3250 2    50   Output ~ 0
+LDR
+$Comp
+L power:+3V3 #PWR?
+U 1 1 6038D3AE
+P 3500 2900
+AR Path="/6037F47C/6038D3AE" Ref="#PWR?"  Part="1" 
+AR Path="/6038D3AE" Ref="#PWR0104"  Part="1" 
+F 0 "#PWR0104" H 3500 2750 50  0001 C CNN
+F 1 "+3V3" H 3515 3073 50  0000 C CNN
+F 2 "" H 3500 2900 50  0001 C CNN
+F 3 "" H 3500 2900 50  0001 C CNN
+	1    3500 2900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 60390C0C
+P 8000 2750
+F 0 "R3" V 8207 2750 50  0000 C CNN
+F 1 "1k" V 8116 2750 50  0000 C CNN
+F 2 "" V 7930 2750 50  0001 C CNN
+F 3 "~" H 8000 2750 50  0001 C CNN
+	1    8000 2750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:LED D1
+U 1 1 60391B7D
+P 8400 3100
+F 0 "D1" V 8439 2982 50  0000 R CNN
+F 1 "LED" V 8348 2982 50  0000 R CNN
+F 2 "" H 8400 3100 50  0001 C CNN
+F 3 "~" H 8400 3100 50  0001 C CNN
+	1    8400 3100
+	0    -1   -1   0   
+$EndComp
+Text GLabel 7700 2750 0    50   Output ~ 0
+LED
+Wire Wire Line
+	7700 2750 7850 2750
+Wire Wire Line
+	8400 3250 8400 3400
+$Comp
+L power:GND #PWR0105
+U 1 1 603945B3
+P 8400 3400
+F 0 "#PWR0105" H 8400 3150 50  0001 C CNN
+F 1 "GND" H 8405 3227 50  0000 C CNN
+F 2 "" H 8400 3400 50  0001 C CNN
+F 3 "" H 8400 3400 50  0001 C CNN
+	1    8400 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8400 2750 8400 2950
+Wire Wire Line
+	8150 2750 8400 2750
+Wire Notes Line
+	7300 2450 8850 2450
+Wire Notes Line
+	8850 2450 8850 3850
+Wire Notes Line
+	8850 3850 7300 3850
+Wire Notes Line
+	7300 3850 7300 2450
+Wire Notes Line
+	3000 2450 3000 3950
+Wire Notes Line
+	3000 3950 4200 3950
+Wire Notes Line
+	4200 3950 4200 2450
+Wire Notes Line
+	4200 2450 3000 2450
+$EndSCHEMATC
