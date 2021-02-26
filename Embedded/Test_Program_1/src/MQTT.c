@@ -3,73 +3,95 @@
 #include "pinDefs.h"
 #include "Credentials.h"
 
+#include "aws_iot_config.h"
+#include "aws_iot_log.h"
+#include "aws_iot_version.h"
+#include "aws_iot_mqtt_client_interface.h"
+
+
+
+extern const char aws_root_ca_pem_start[] asm("_binary_AmazonRootCA1_pem_start");
+extern const char aws_root_ca_pem_end[] asm("_binary_AmazonRootCA1_pem_end");
+extern const char certificate_pem_crt_start[] asm("_binary_f866013750_certificate_pem_crt_start");
+extern const char certificate_pem_crt_end[] asm("_binary_f866013750_certificate_pem_crt_end");
+extern const char private_pem_key_start[] asm("_binary_f866013750_private_pem_key_start");
+extern const char private_pem_key_end[] asm("_binary_f866013750_private_pem_key_end");
+
+
 static const char * LOG_MQTT = "MQTT";
 
-static void dataRecvHandler( char * topic, int topic_len, char * data, int data_len ) {
-    if ( strncmp( "homeAutomation/LED1", topic, topic_len ) == 0 ) {
-        if ( data_len > 0 && data[0] == '1' ) {
-            gpio_set_level( PIN_LED, 1 );
-        } else {
-            gpio_set_level( PIN_LED, 0 );
-        }
-    } 
+void iot_subscribe_callback_handler(AWS_IoT_Client *pClient, char *topicName, uint16_t topicNameLen,
+                                    IoT_Publish_Message_Params *params, void *pData) {
+    ESP_LOGI(LOG_MQTT, "Subscribe callback");
+    ESP_LOGI(LOG_MQTT, "%.*s\t%.*s", topicNameLen, topicName, (int) params->payloadLen, (char *)params->payload);
 }
 
-static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
-{
-    esp_mqtt_client_handle_t client = event->client;
-    int msg_id;
-    // your_context_t *context = event->context;
-    switch (event->event_id) {
-        case MQTT_EVENT_CONNECTED:
-            ESP_LOGI( LOG_MQTT, "MQTT_EVENT_CONNECTED" );
-            msg_id = esp_mqtt_client_publish( client, "devices/dev1", "Online", 0, 1, 1 );
-            ESP_LOGI( LOG_MQTT, "sent publish successful, msg_id=%d", msg_id );
+void disconnectCallbackHandler(AWS_IoT_Client *pClient, void *data) {
+    ESP_LOGW(LOG_MQTT, "MQTT Disconnect");
+    IoT_Error_t rc = FAILURE;
 
-            msg_id = esp_mqtt_client_subscribe( client, "homeAutomation/LED1", 1 );
-            ESP_LOGI( LOG_MQTT, "sent subscribe successful, msg_id=%d", msg_id );
-
-            // msg_id = esp_mqtt_client_unsubscribe( client, "/topic/qos1" );
-            // ESP_LOGI( LOG_MQTT, "sent unsubscribe successful, msg_id=%d", msg_id );
-            break;
-        case MQTT_EVENT_DISCONNECTED:
-            ESP_LOGI( LOG_MQTT, "MQTT_EVENT_DISCONNECTED" );
-            break;
-
-        case MQTT_EVENT_SUBSCRIBED:
-            ESP_LOGI( LOG_MQTT, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id );
-            break;
-        case MQTT_EVENT_UNSUBSCRIBED:
-            ESP_LOGI( LOG_MQTT, "MQTT_EVENT_UNSUBSCRIBED, msg_id=%d", event->msg_id );
-            break;
-        case MQTT_EVENT_PUBLISHED:
-            ESP_LOGI( LOG_MQTT, "MQTT_EVENT_PUBLISHED, msg_id=%d", event->msg_id );
-            break;
-        case MQTT_EVENT_DATA:
-            ESP_LOGI( LOG_MQTT, "MQTT_EVENT_DATA" );
-            ESP_LOGI( LOG_MQTT, "TOPIC=%.*s\r\n", event->topic_len, event->topic );
-            ESP_LOGI( LOG_MQTT, "DATA=%.*s\r\n", event->data_len, event->data );
-            dataRecvHandler( event->topic, event->topic_len, event->data, event->data_len );
-
-            break;
-        case MQTT_EVENT_ERROR:
-            ESP_LOGI( LOG_MQTT, "MQTT_EVENT_ERROR" );
-            break;
-        default:
-            ESP_LOGI( LOG_MQTT, "Other event id:%d", event->event_id );
-            break;
+    if(NULL == pClient) {
+        return;
     }
-    return ESP_OK;
+
+    if(aws_iot_is_autoreconnect_enabled(pClient)) {
+        ESP_LOGI(LOG_MQTT, "Auto Reconnect is enabled, Reconnecting attempt will start now");
+    } else {
+        ESP_LOGW(LOG_MQTT, "Auto Reconnect not enabled. Starting manual reconnect...");
+        rc = aws_iot_mqtt_attempt_reconnect(pClient);
+        if(NETWORK_RECONNECTED == rc) {
+            ESP_LOGW(LOG_MQTT, "Manual Reconnect Successful");
+        } else {
+            ESP_LOGW(LOG_MQTT, "Manual Reconnect Failed - %d", rc);
+        }
+    }
 }
 
-void initialiseMQTT( void )
-{
-    esp_mqtt_client_config_t mqtt_cfg = {
-        .uri = MQTT_URI,
-        .event_handle = mqtt_event_handler,
-        // .user_context = (void *)your_context
-    };
+void initialiseMQTT( void * params ) {
+    IoT_Error_t rc = FAILURE;
 
-    mqttClient = esp_mqtt_client_init( &mqtt_cfg );
-    esp_mqtt_client_start( mqttClient );
+    AWS_IoT_Client client;
+    IoT_Client_Init_Params mqttInitParams = iotClientInitParamsDefault;
+    IoT_Client_Connect_Params connectParams = iotClientConnectParamsDefault;
+
+    ESP_LOGI(LOG_MQTT, "AWS IoT SDK Version %d.%d.%d-%s", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_TAG);
+
+    mqttInitParams.enableAutoReconnect = false; // We enable this later below
+    mqttInitParams.pHostURL = MQTT_HOST_NAME;
+    mqttInitParams.port = MQTT_PORT;
+
+    mqttInitParams.pRootCALocation = (const char *)aws_root_ca_pem_start;
+    mqttInitParams.pDeviceCertLocation = (const char *)certificate_pem_crt_start;
+    mqttInitParams.pDevicePrivateKeyLocation = (const char *)private_pem_key_start;
+
+
+    mqttInitParams.mqttCommandTimeout_ms = 20000;
+    mqttInitParams.tlsHandshakeTimeout_ms = 5000;
+    mqttInitParams.isSSLHostnameVerify = true;
+    mqttInitParams.disconnectHandler = disconnectCallbackHandler;
+    mqttInitParams.disconnectHandlerData = NULL;
+
+    rc = aws_iot_mqtt_init(&client, &mqttInitParams);
+    if(SUCCESS != rc) {
+        ESP_LOGE(LOG_MQTT, "aws_iot_mqtt_init returned error : %d ", rc);
+        abort();
+    }
+
+    connectParams.keepAliveIntervalInSec = 10;
+    connectParams.isCleanSession = true;
+    connectParams.MQTTVersion = MQTT_3_1_1;
+    /* Client ID is set in the menuconfig of the example */
+    connectParams.pClientID = AWS_CLIENT_ID;
+    connectParams.clientIDLen = (uint16_t) strlen(AWS_CLIENT_ID);
+    connectParams.isWillMsgPresent = false;
+
+    ESP_LOGI(LOG_MQTT, "Connecting to AWS...");
+    do {
+        rc = aws_iot_mqtt_connect(&client, &connectParams);
+        if(SUCCESS != rc) {
+            ESP_LOGE(LOG_MQTT, "Error(%d) connecting to %s:%d", rc, mqttInitParams.pHostURL, mqttInitParams.port);
+            vTaskDelay(1000 / portTICK_RATE_MS);
+        }
+    } while(SUCCESS != rc);
+    vTaskDelete( NULL );
 }

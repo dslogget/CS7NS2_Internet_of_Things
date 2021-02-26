@@ -65,7 +65,7 @@ void app_main() {
 
     ESP_LOGI( LOG_MISC, "Hello World!\n" );
     initialiseWifi();
-    initialiseMQTT();
+    xTaskCreatePinnedToCore( &initialiseMQTT, "MQTTInit", 9216, NULL, 1, NULL, 1 );
 
     setupQueues();
 

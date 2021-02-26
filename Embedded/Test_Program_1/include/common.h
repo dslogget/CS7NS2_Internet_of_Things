@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -18,7 +19,7 @@
 #include "esp_adc_cal.h"
 #include "esp_log.h"
 
-#include "mqtt_client.h"
+#include "aws_iot_mqtt_client_interface.h"
 
 
 #include <stdbool.h>
