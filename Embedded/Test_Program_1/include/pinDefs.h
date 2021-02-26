@@ -6,6 +6,8 @@
 
 #define PIN_LED GPIO_NUM_4
 
+#define PIN_SERVO GPIO_NUM_16
+
 #define CHANNEL_LDR ADC_CHANNEL_7
 
 
