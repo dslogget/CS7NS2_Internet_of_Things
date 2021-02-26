@@ -3,6 +3,7 @@
 #define VARIABLES_IMPL
 #include "globalVariables.h"
 #include "tasksInclude.h"
+#include "generalHelpers.h"
 #include "WiFiHelper.h"
 #include "MQTTHelper.h"
 #include "nvs_flash.h"
@@ -12,6 +13,7 @@ static const char * LOG_LED = "LED";
 static const char * LOG_LDR = "LDR";
 static const char * LOG_WIFI = "WIFI";
 static const char * LOG_MQTT = "MQTT";
+static const char * LOG_SERVO = "SERVO";
 
 static void initialiseLogs( void ) {
     esp_log_level_set( "*", ESP_LOG_WARN );
@@ -20,6 +22,7 @@ static void initialiseLogs( void ) {
     esp_log_level_set( LOG_LDR, ESP_LOG_WARN );
     esp_log_level_set( LOG_WIFI, ESP_LOG_INFO );
     esp_log_level_set( LOG_MQTT, ESP_LOG_INFO );
+    esp_log_level_set( LOG_SERVO, ESP_LOG_INFO );
 }
 
 static void startTasks( void ) {
@@ -70,6 +73,7 @@ void app_main() {
     setupQueues();
 
     initialisePins();
+    servoInit();
     
     startTasks();
 

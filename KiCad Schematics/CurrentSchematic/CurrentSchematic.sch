@@ -133,7 +133,7 @@ F 3 "~" H 8400 3100 50  0001 C CNN
 	1    8400 3100
 	0    -1   -1   0   
 $EndComp
-Text GLabel 7700 2750 0    50   Output ~ 0
+Text GLabel 7700 2750 0    50   Input ~ 0
 LED
 Wire Wire Line
 	7700 2750 7850 2750
@@ -163,11 +163,79 @@ Wire Notes Line
 Wire Notes Line
 	7300 3850 7300 2450
 Wire Notes Line
-	3000 2450 3000 3950
+	4200 2600 3000 2600
+Wire Notes Line
+	4200 2600 4200 3950
+Wire Notes Line
+	3000 2600 3000 3950
 Wire Notes Line
 	3000 3950 4200 3950
+Text GLabel 6250 3700 2    50   Output ~ 0
+SERVO
+$Comp
+L power:+5V #PWR?
+U 1 1 603922FA
+P 5000 4400
+F 0 "#PWR?" H 5000 4250 50  0001 C CNN
+F 1 "+5V" V 5015 4528 50  0000 L CNN
+F 2 "" H 5000 4400 50  0001 C CNN
+F 3 "" H 5000 4400 50  0001 C CNN
+	1    5000 4400
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 60393670
+P 7450 4600
+F 0 "#PWR?" H 7450 4450 50  0001 C CNN
+F 1 "+5V" H 7465 4728 50  0000 C BNN
+F 2 "" H 7450 4600 50  0001 C CNN
+F 3 "" H 7450 4600 50  0001 C CNN
+	1    7450 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x03_Female J?
+U 1 1 6039A676
+P 8300 4700
+F 0 "J?" H 8328 4726 50  0000 L CNN
+F 1 "Servo Header" H 8328 4635 50  0000 L CNN
+F 2 "" H 8300 4700 50  0001 C CNN
+F 3 "~" H 8300 4700 50  0001 C CNN
+	1    8300 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6039C390
+P 7450 4900
+F 0 "#PWR?" H 7450 4650 50  0001 C CNN
+F 1 "GND" H 7455 4772 50  0000 C TNN
+F 2 "" H 7450 4900 50  0001 C CNN
+F 3 "" H 7450 4900 50  0001 C CNN
+	1    7450 4900
+	1    0    0    -1  
+$EndComp
+Text GLabel 8000 4600 0    50   Input ~ 0
+SERVO
+Text Notes 7400 4350 0    50   ~ 0
+Pin 1 has an arrow and is orange\nRed it 5V\nBrown is ground
+Wire Wire Line
+	7450 4700 7450 4600
+Wire Wire Line
+	7450 4700 8100 4700
+Wire Wire Line
+	7450 4800 7450 4900
+Wire Wire Line
+	7450 4800 8100 4800
+Wire Wire Line
+	8100 4600 8000 4600
 Wire Notes Line
-	4200 3950 4200 2450
+	7300 4050 8850 4050
 Wire Notes Line
-	4200 2450 3000 2450
+	8850 4050 8850 5150
+Wire Notes Line
+	8850 5150 7300 5150
+Wire Notes Line
+	7300 5150 7300 4050
 $EndSCHEMATC
