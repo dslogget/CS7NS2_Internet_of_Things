@@ -9,10 +9,9 @@ static const char * LOG_LDR = "LDR";
 
 static const char * const TOPIC = "homeAutomation/LDR1";
 
-
 void ldrRead( void * params ) {
     uint32_t adc_reading;
-    char buff[ 50 ] = { 0 };
+    char buff[ 50 ] =  { 0 };
 
     while( 1 ) {
         // Average of 5 samples reading
