@@ -3,11 +3,6 @@
 #include "pinDefs.h"
 #include "Credentials.h"
 
-#include "aws_iot_config.h"
-#include "aws_iot_log.h"
-#include "aws_iot_version.h"
-#include "aws_iot_mqtt_client_interface.h"
-
 
 
 extern const char aws_root_ca_pem_start[] asm("_binary_AmazonRootCA1_pem_start");
