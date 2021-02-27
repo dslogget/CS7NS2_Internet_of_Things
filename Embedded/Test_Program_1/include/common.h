@@ -19,7 +19,7 @@
 #include "esp_adc_cal.h"
 #include "esp_log.h"
 
-#include "aws_iot_mqtt_client_interface.h"
+#include "mqtt_client.h"
 
 
 #include <stdbool.h>

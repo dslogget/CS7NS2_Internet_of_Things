@@ -11,13 +11,8 @@ static const char * const TOPIC = "homeAutomation/LDR1";
 
 
 void ldrRead( void * params ) {
-    const int TOPIC_LEN = strlen( TOPIC );
     uint32_t adc_reading;
     char buff[ 50 ] = { 0 };
-    IoT_Publish_Message_Params toPublish;
-    toPublish.qos = QOS0;
-    toPublish.isRetained = 0;
-    toPublish.payload = buff;
 
     while( 1 ) {
         // Average of 5 samples reading
@@ -29,9 +24,7 @@ void ldrRead( void * params ) {
         uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, adc1_chars);
         ESP_LOGI( LOG_LDR, "Raw: %d\tVoltage: %dmV\n", adc_reading, voltage );
         sprintf( buff, "%dmV", voltage );
-
-        toPublish.payloadLen = strlen( buff );
-        aws_iot_mqtt_publish(&mqtt_client, "homeAutomation/LDR1", TOPIC_LEN, &toPublish);
+        esp_mqtt_client_publish( mqttClient, TOPIC, buff, 0, 1, 0 );
         vTaskDelay( 30 * 1000 / portTICK_PERIOD_MS );
     }
 }
