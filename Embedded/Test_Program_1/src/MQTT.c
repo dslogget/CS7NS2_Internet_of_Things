@@ -7,10 +7,10 @@
 
 extern const char aws_root_ca_pem_start[] asm("_binary_AmazonRootCA1_pem_start");
 extern const char aws_root_ca_pem_end[] asm("_binary_AmazonRootCA1_pem_end");
-extern const char certificate_pem_crt_start[] asm("_binary_f866013750_certificate_pem_crt_start");
-extern const char certificate_pem_crt_end[] asm("_binary_f866013750_certificate_pem_crt_end");
-extern const char private_pem_key_start[] asm("_binary_f866013750_private_pem_key_start");
-extern const char private_pem_key_end[] asm("_binary_f866013750_private_pem_key_end");
+extern const char certificate_pem_crt_start[] asm("_binary_3cf24bcf68_certificate_pem_crt_start");
+extern const char certificate_pem_crt_end[] asm("_binary_3cf24bcf68_certificate_pem_crt_end");
+extern const char private_pem_key_start[] asm("_binary_3cf24bcf68_private_pem_key_start");
+extern const char private_pem_key_end[] asm("_binary_3cf24bcf68_private_pem_key_end");
 
 
 static const char * LOG_MQTT = "MQTT";
