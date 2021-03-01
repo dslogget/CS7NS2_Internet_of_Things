@@ -1,3 +1,4 @@
+#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 #include "common.h"
 #include "pinDefs.h"
 #define VARIABLES_IMPL
@@ -68,6 +69,7 @@ void app_main() {
 
     ESP_LOGI( LOG_MISC, "Hello World!\n" );
     initialiseWifi();
+
     initialiseMQTT();
 
     setupQueues();

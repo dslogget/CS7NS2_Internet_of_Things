@@ -4,7 +4,18 @@
 #include "Credentials.h"
 #include "generalHelpers.h"
 
+
+
+extern const char aws_root_ca_pem_start[] asm("_binary_AmazonRootCA1_pem_start");
+extern const char aws_root_ca_pem_end[] asm("_binary_AmazonRootCA1_pem_end");
+extern const char certificate_pem_crt_start[] asm("_binary_3cf24bcf68_certificate_pem_crt_start");
+extern const char certificate_pem_crt_end[] asm("_binary_3cf24bcf68_certificate_pem_crt_end");
+extern const char private_pem_key_start[] asm("_binary_3cf24bcf68_private_pem_key_start");
+extern const char private_pem_key_end[] asm("_binary_3cf24bcf68_private_pem_key_end");
+
+
 static const char * LOG_MQTT = "MQTT";
+
 
 static void dataRecvHandler( char * topic, int topic_len, char * data, int data_len ) {
     char degreesToConvert[ 4 ] = { 0 };
@@ -32,8 +43,8 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
     switch (event->event_id) {
         case MQTT_EVENT_CONNECTED:
             ESP_LOGI( LOG_MQTT, "MQTT_EVENT_CONNECTED" );
-            msg_id = esp_mqtt_client_publish( client, "devices/dev1", "Online", 0, 1, 1 );
-            ESP_LOGI( LOG_MQTT, "sent publish successful, msg_id=%d", msg_id );
+            //msg_id = esp_mqtt_client_publish( client, "devices/dev1", "Online", 0, 1, 1 );
+            //ESP_LOGI( LOG_MQTT, "sent publish successful, msg_id=%d", msg_id );
 
             msg_id = esp_mqtt_client_subscribe( client, "homeAutomation/LED1", 1 );
             ESP_LOGI( LOG_MQTT, "sent subscribe successful, msg_id=%d", msg_id );
@@ -79,9 +90,16 @@ void initialiseMQTT( void )
     esp_mqtt_client_config_t mqtt_cfg = {
         .uri = MQTT_URI,
         .event_handle = mqtt_event_handler,
+        .cert_pem = aws_root_ca_pem_start,
+        .cert_len = ( size_t )( aws_root_ca_pem_end - aws_root_ca_pem_start ),
+        .client_cert_pem = certificate_pem_crt_start,
+        .client_cert_len = ( size_t )( certificate_pem_crt_end - certificate_pem_crt_start ),
+        .client_key_pem= private_pem_key_start,
+        .client_key_len = ( size_t )( private_pem_key_end - private_pem_key_start ),
         // .user_context = (void *)your_context
     };
 
     mqttClient = esp_mqtt_client_init( &mqtt_cfg );
     esp_mqtt_client_start( mqttClient );
 }
+
