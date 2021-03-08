@@ -13,12 +13,14 @@
 extern TaskHandle_t ledStateTaskHandle;
 extern esp_adc_cal_characteristics_t * adc1_chars;
 extern esp_mqtt_client_handle_t mqttClient;
+extern uint8_t MAC_ADDRESS[ 6 ];
 #else
 // final example
 // QueueHandle_t serialOutQueue = NULL;
 TaskHandle_t ledStateTaskHandle = NULL;
 esp_adc_cal_characteristics_t * adc1_chars = NULL;
 esp_mqtt_client_handle_t mqttClient = NULL;
+uint8_t MAC_ADDRESS[ 6 ] = { 0 };
 #undef VARIABLES_IMPL
 #endif
 

@@ -7,6 +7,7 @@
 #include "WiFiHelper.h"
 #include "MQTTHelper.h"
 #include "nvs_flash.h"
+#include "esp_sntp.h"
 
 static const char * LOG_MISC = "MISC";
 static const char * LOG_LED = "LED";
@@ -18,7 +19,7 @@ static void initialiseLogs( void ) {
     esp_log_level_set( "*", ESP_LOG_WARN );
     esp_log_level_set( LOG_MISC, ESP_LOG_INFO );
     esp_log_level_set( LOG_LED, ESP_LOG_WARN );
-    esp_log_level_set( LOG_LDR, ESP_LOG_WARN );
+    esp_log_level_set( LOG_LDR, ESP_LOG_INFO );
     esp_log_level_set( LOG_WIFI, ESP_LOG_INFO );
     esp_log_level_set( LOG_MQTT, ESP_LOG_INFO );
 }
@@ -52,6 +53,18 @@ static void setupQueues( void ) {
     
 }
 
+static void setupTimes( void ) {
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    sntp_setservername(0, "pool.ntp.org");
+    sntp_init();
+
+    int retryCounter = 10;
+
+    while ( retryCounter && sntp_get_sync_status() != SNTP_SYNC_STATUS_COMPLETED ) {
+        vTaskDelay( 1000 / portTICK_PERIOD_MS );
+    }
+}
+
 void app_main() {
      //Initialize NVS
     esp_err_t ret = nvs_flash_init();
@@ -64,6 +77,7 @@ void app_main() {
 
     initialiseLogs();
 
+    ESP_ERROR_CHECK( esp_read_mac( MAC_ADDRESS, 0 ) );
     ESP_LOGI( LOG_MISC, "Hello World!\n" );
     initialiseWifi();
 
@@ -72,6 +86,8 @@ void app_main() {
     setupQueues();
 
     initialisePins();
+
+    setupTimes();
     
     startTasks();
 
