@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ScrollView : MonoBehaviour
 {
     public Scrollbar scrollbar;
+    public Transform panels;
 
     public void Update_Value()
     {

@@ -107,6 +107,7 @@ namespace M2MqttUnity
         /// </summary>
         protected virtual void OnConnecting()
         {
+            //Request current actuator status from Cloud
             Debug.LogFormat("Connecting to broker on {0}:{1}...\n", brokerAddress, brokerPort.ToString());
         }
 
