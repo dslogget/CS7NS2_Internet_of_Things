@@ -5,6 +5,7 @@
 #include "driver/adc.h"
 
 #define PIN_LED GPIO_NUM_4
+#define PIN_MICROPHONE GPIO_NUM_17
 
 #define CHANNEL_LDR ADC_CHANNEL_7
 
