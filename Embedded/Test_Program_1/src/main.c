@@ -54,6 +54,9 @@ static void initialisePins( void ) {
                              GPIO_INTR_DISABLE };
 
     ESP_ERROR_CHECK( gpio_config( &config ) );
+    config.pin_bit_mask = GPIO_SEL_5;
+
+    ESP_ERROR_CHECK( gpio_config( &config ) );
 
     config.pin_bit_mask = GPIO_SEL_17;
     config.mode = GPIO_MODE_INPUT;
