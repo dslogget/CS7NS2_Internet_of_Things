@@ -47,14 +47,11 @@ static void initialisePins( void ) {
                               DEFAULT_VREF,
                               adc1_chars );
 
-    gpio_config_t config = { GPIO_SEL_4,
+    gpio_config_t config = { GPIO_SEL_4 | GPIO_SEL_5,
                              GPIO_MODE_OUTPUT,
                              GPIO_PULLUP_DISABLE,
                              GPIO_PULLDOWN_DISABLE,
                              GPIO_INTR_DISABLE };
-
-    ESP_ERROR_CHECK( gpio_config( &config ) );
-    config.pin_bit_mask = GPIO_SEL_5;
 
     ESP_ERROR_CHECK( gpio_config( &config ) );
 
