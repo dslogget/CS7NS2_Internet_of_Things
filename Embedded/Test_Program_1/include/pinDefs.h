@@ -7,6 +7,7 @@
 #include "soc/mcpwm_periph.h"
 
 #define PIN_LED GPIO_NUM_4
+#define PIN_MICROPHONE GPIO_NUM_17
 
 #define PIN_SERVO GPIO_NUM_16
 #define SERVO_MCPWM_UNIT MCPWM_UNIT_0
