@@ -5,5 +5,6 @@ void blinkLED( void * params );
 void ledState( void * params );
 void ldrRead( void * params );
 void microphoneTask( void * params );
+void PIRTask( void * params );
 
 #endif
