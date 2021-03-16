@@ -18,6 +18,7 @@ static const char * LOG_WIFI = "WIFI";
 static const char * LOG_MQTT = "MQTT";
 static const char * LOG_SERVO = "SERVO";
 static const char * LOG_MIC = "MIC";
+static const char * LOG_WATER = "WATER";
 
 static void initialiseLogs( void ) {
     esp_log_level_set( "*", ESP_LOG_WARN );
@@ -28,6 +29,7 @@ static void initialiseLogs( void ) {
     esp_log_level_set( LOG_MQTT, ESP_LOG_INFO );
     esp_log_level_set( LOG_SERVO, ESP_LOG_INFO );
     esp_log_level_set( LOG_MIC, ESP_LOG_INFO );
+    esp_log_level_set( LOG_WATER, ESP_LOG_INFO );
 }
 
 static void startTasks( void ) {
@@ -35,6 +37,7 @@ static void startTasks( void ) {
     // xTaskCreatePinnedToCore( &blinkLED, "blinkLED", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &ldrRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &microphoneTask, "microphone", 2048, NULL, 1, &microphoneTaskHandle, 1 );
+    xTaskCreatePinnedToCore( &waterTask, "water", 2048, NULL, 1, &waterTaskHandle, 1 );
 }
 
 static void initialisePins( void ) {
@@ -54,6 +57,17 @@ static void initialisePins( void ) {
                              GPIO_INTR_DISABLE };
 
     ESP_ERROR_CHECK( gpio_config( &config ) );
+
+    config.pin_bit_mask = GPIO_SEL_15;
+    config.mode = GPIO_MODE_INPUT;
+    config.intr_type = GPIO_INTR_POSEDGE;
+    ESP_ERROR_CHECK( gpio_config( &config ) );
+
+
+    //install gpio isr service
+    ESP_ERROR_CHECK( gpio_install_isr_service( 0 ) );
+
+    ESP_ERROR_CHECK( gpio_isr_handler_add( PIN_WATER, waterISR, (void*) PIN_WATER ) );
 
     config.pin_bit_mask = GPIO_SEL_17;
     config.mode = GPIO_MODE_INPUT;
