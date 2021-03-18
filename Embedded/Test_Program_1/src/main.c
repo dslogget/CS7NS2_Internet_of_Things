@@ -19,6 +19,8 @@ static const char * LOG_MQTT = "MQTT";
 static const char * LOG_SERVO = "SERVO";
 static const char * LOG_MIC = "MIC";
 static const char * LOG_WATER = "WATER";
+static const char * LOG_TEMPERATURE = "TEMPERATURE";
+static const char * LOG_HUMIDITY = "HUMIDITY";
 
 static void initialiseLogs( void ) {
     esp_log_level_set( "*", ESP_LOG_WARN );
@@ -30,6 +32,8 @@ static void initialiseLogs( void ) {
     esp_log_level_set( LOG_SERVO, ESP_LOG_INFO );
     esp_log_level_set( LOG_MIC, ESP_LOG_INFO );
     esp_log_level_set( LOG_WATER, ESP_LOG_INFO );
+    esp_log_level_set( LOG_TEMPERATURE, ESP_LOG_INFO );
+    esp_log_level_set( LOG_HUMIDITY, ESP_LOG_INFO );
 }
 
 static void startTasks( void ) {
@@ -38,6 +42,8 @@ static void startTasks( void ) {
     xTaskCreatePinnedToCore( &ldrRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &microphoneTask, "microphone", 2048, NULL, 1, &microphoneTaskHandle, 1 );
     xTaskCreatePinnedToCore( &waterTask, "water", 2048, NULL, 1, &waterTaskHandle, 1 );
+    xTaskCreatePinnedToCore( &temperatureTask, "temperature", 2048, NULL, 1, &temperatureTaskHandle, 1 );
+    xTaskCreatePinnedToCore( &humidityTask, "humidity", 2048, NULL, 1, &humidityTaskHandle, 1 );
 }
 
 static void initialisePins( void ) {
@@ -79,6 +85,29 @@ static void initialisePins( void ) {
     ESP_ERROR_CHECK( gpio_install_isr_service( 0 ) );
 
     ESP_ERROR_CHECK( gpio_isr_handler_add( PIN_MICROPHONE, microphoneISR, (void*) PIN_MICROPHONE ) );
+
+    config.pin_bit_mask = GPIO_SEL_21;
+    config.mode = GPIO_MODE_INPUT;
+    config.intr_type = GPIO_INTR_POSEDGE;
+    ESP_ERROR_CHECK( gpio_config( &config ) );
+
+
+    //install gpio isr service
+    ESP_ERROR_CHECK( gpio_install_isr_service( 0 ) );
+
+    ESP_ERROR_CHECK( gpio_isr_handler_add( PIN_TEMPERATURE, temperatureISR, (void*) PIN_TEMPERATURE ) );
+
+    config.pin_bit_mask = GPIO_SEL_22;
+    config.mode = GPIO_MODE_INPUT;
+    config.intr_type = GPIO_INTR_POSEDGE;
+    ESP_ERROR_CHECK( gpio_config( &config ) );
+
+
+    //install gpio isr service
+    ESP_ERROR_CHECK( gpio_install_isr_service( 0 ) );
+
+    ESP_ERROR_CHECK( gpio_isr_handler_add( PIN_HUMIDITY, microphoneISR, (void*) PIN_HUMIDITY ) );
+
 }
 
 static void setupQueues( void ) { 
