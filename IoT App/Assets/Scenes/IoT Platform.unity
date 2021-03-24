@@ -162,7 +162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 512.2089, y: 0}
+  m_AnchoredPosition: {x: 489.14365, y: 0}
   m_SizeDelta: {x: 826, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6460111
@@ -276,7 +276,7 @@ MonoBehaviour:
   confirmButton: {fileID: 1974711584}
   cancelButton: {fileID: 1775110576}
   icon: {fileID: 21300000, guid: daf70a2e96a024e789b229876ca0d20b, type: 3}
-  titleText: Test Peripheries
+  titleText: Test Peripherals
   descriptionText: 
   onConfirm:
     m_PersistentCalls:
@@ -4128,7 +4128,7 @@ GameObject:
   - component: {fileID: 516408925}
   - component: {fileID: 516408924}
   m_Layer: 5
-  m_Name: Slider - Radial
+  m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5694,7 +5694,7 @@ GameObject:
   - component: {fileID: 760455723}
   - component: {fileID: 760455722}
   m_Layer: 5
-  m_Name: Slider - Radial
+  m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8232,10 +8232,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brokerAddress: 192.168.1.1
   brokerPort: 0
-  isEncrypted: 1
+  isEncrypted: 0
   connectionDelay: 500
   timeoutOnConnection: 30000
-  autoConnect: 1
+  autoConnect: 0
   mqttUserName: 
   mqttPassword: 
   sceneManagerGO: {fileID: 208315215}
@@ -12694,7 +12694,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Test Peripheries
+  m_text: Test Peripherals
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fa328c1ae3ffb6b4583cf371153b0be6, type: 2}
   m_sharedMaterial: {fileID: 21918420405216288, guid: fa328c1ae3ffb6b4583cf371153b0be6, type: 2}
@@ -12885,7 +12885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1775110576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12928,19 +12928,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1775110577}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7764198}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: CloseWindow
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1775110577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13005,7 +12993,19 @@ MonoBehaviour:
   buttonText: CANCEL
   buttonEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7764198}
+        m_TargetAssemblyTypeName: Michsky.UI.ModernUIPack.ModalWindowManager, Assembly-CSharp
+        m_MethodName: CloseWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   hoverSound: {fileID: 0}
   clickSound: {fileID: 0}
   normalIcon: {fileID: 1733787051}
@@ -13041,10 +13041,10 @@ RectTransform:
   m_Father: {fileID: 1796216660}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 595, y: -25}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1782060906
 GameObject:
@@ -13993,19 +13993,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1974711582}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7764198}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: CloseWindow
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1974711585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14022,7 +14010,19 @@ MonoBehaviour:
   buttonText: GOT IT
   buttonEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7764198}
+        m_TargetAssemblyTypeName: Michsky.UI.ModernUIPack.ModalWindowManager, Assembly-CSharp
+        m_MethodName: CloseWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   hoverSound: {fileID: 0}
   clickSound: {fileID: 0}
   normalIcon: {fileID: 1373626608}
@@ -17368,7 +17368,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c0192021f0819453893127f079db742d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 075cdafad72b24f29bde2715dc1b62f1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

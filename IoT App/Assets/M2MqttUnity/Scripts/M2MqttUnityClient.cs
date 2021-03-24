@@ -28,6 +28,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text;
+
+public enum PemStringType { Certificate = 1, RsaPrivateKey = 2 }
 
 /// <summary>
 /// Adaptation for Unity of the M2MQTT library (https://github.com/eclipse/paho.mqtt.m2mqtt),
@@ -260,6 +267,28 @@ namespace M2MqttUnity
             mqttClientConnected = false;
         }
 
+        private byte[] GetBytesFromPEM(string pemString, PemStringType type)
+        {
+            string header; string footer;
+            switch (type)
+            {
+                case PemStringType.Certificate:
+                    header = "-----BEGIN CERTIFICATE-----";
+                    footer = "-----END CERTIFICATE-----";
+                    break;
+                case PemStringType.RsaPrivateKey:
+                    header = "-----BEGIN RSA PRIVATE KEY-----";
+                    footer = "-----END RSA PRIVATE KEY-----";
+                    break;
+                default:
+                    return null;
+            }
+
+            int start = pemString.IndexOf(header) + header.Length;
+            int end = pemString.IndexOf(footer, start) - start;
+            return Convert.FromBase64String(pemString.Substring(start, end));
+        }
+
         /// <summary>
         /// Connects to the broker using the current settings.
         /// </summary>
@@ -279,9 +308,33 @@ namespace M2MqttUnity
 #if (!UNITY_EDITOR && UNITY_WSA_10_0 && !ENABLE_IL2CPP)
                     client = new MqttClient(brokerAddress,brokerPort,isEncrypted, isEncrypted ? MqttSslProtocols.SSLv3 : MqttSslProtocols.None);
 #else
-                    client = new MqttClient(brokerAddress, brokerPort, isEncrypted, null, null, isEncrypted ? MqttSslProtocols.SSLv3 : MqttSslProtocols.None);
-                    //System.Security.Cryptography.X509Certificates.X509Certificate cert = new System.Security.Cryptography.X509Certificates.X509Certificate();
-                    //client = new MqttClient(brokerAddress, brokerPort, isEncrypted, cert, null, MqttSslProtocols.TLSv1_0, MyRemoteCertificateValidationCallback);
+                    if (!isEncrypted)
+                    {
+                        client = new MqttClient(brokerAddress, brokerPort, isEncrypted, null, null, isEncrypted ? MqttSslProtocols.SSLv3 : MqttSslProtocols.None);
+                    }
+                    else
+                    {
+                        string caCertFilePath = Application.dataPath + "/Resources/Certificates/AmazonRootCA1.pem";
+                        string clientCertFilePath = Application.dataPath + "/Resources/Certificates/client.pfx";
+
+                        Debug.Log(caCertFilePath);
+                        Debug.Log(clientCertFilePath);
+
+                        Debug.Log(File.Exists(caCertFilePath));
+                        Debug.Log(File.Exists(clientCertFilePath));
+
+                        StreamReader sr = new StreamReader(caCertFilePath, Encoding.ASCII, true);
+                        byte[] raw = Encoding.ASCII.GetBytes(sr.ReadToEnd());
+                        var caCert = new X509Certificate2(raw, string.Empty, X509KeyStorageFlags.DefaultKeySet);
+                        Debug.Log(caCert.ToString());
+
+                        //StreamReader sr2 = new StreamReader(clientCertFilePath, Encoding.ASCII, true);
+                        //byte[] raw2 = Encoding.ASCII.GetBytes(sr2.ReadToEnd());
+                        var clientCert = new X509Certificate2(clientCertFilePath, String.Empty);
+                        Debug.Log(clientCert.ToString());
+
+                        client = new MqttClient(brokerAddress, brokerPort, isEncrypted, caCert, clientCert, MqttSslProtocols.SSLv3);
+                    }
 #endif
                 }
                 catch (Exception e)

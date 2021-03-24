@@ -1,12 +1,16 @@
-﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MQTTProtocol.cs">
+﻿<Properties StartupConfiguration="{D4E68B8C-3752-9C84-1E61-D60872B6B14D}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/M2Mqtt/MqttClient.cs">
     <Files>
-      <File FileName="Assets/Scripts/MQTTProtocol.cs" Line="151" Column="1" />
+      <File FileName="Assets/M2MqttUnity/Scripts/M2MqttUnityClient.cs" Line="336" Column="43" />
+      <File FileName="Assets/Scripts/MQTTProtocol.cs" Line="447" Column="34" />
+      <File FileName="Assets/M2Mqtt/MqttClient.cs" Line="26" Column="4" />
+      <File FileName="Assets/M2MqttUnity/Scripts/BrokerSettings.cs" Line="1" Column="1" />
+      <File FileName="Assets/M2Mqtt/Net/MqttNetworkChannel.cs" Line="204" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="0364decd-33c1-4076-a35f-4e24c9fa511e" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d78788aa-44d2-48a4-921a-85ab95ad7d48" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -378,18 +378,22 @@ namespace M2MqttUnity.Examples
             if (PlayerPrefs.HasKey("encrypted"))
             {
                 bool encrypted = Convert.ToBoolean(PlayerPrefs.GetInt("encrypted"));
+                //int temp = encrypted ? 1 : 0;
+                //Debug.Log("Encrypted: " + temp.ToString());
                 encryptedToggle.onValueChanged.Invoke(encrypted);
             }
 
             if (PlayerPrefs.HasKey("host"))
             {
                 string brokerAddress = PlayerPrefs.GetString("host");
+                //Debug.Log("Encrypted: " + brokerAddress);
                 addressInputField.onValueChanged.Invoke(brokerAddress);
             }
 
             if (PlayerPrefs.HasKey("port"))
             {
                 string brokerPort = PlayerPrefs.GetString("port");
+                //Debug.Log("Encrypted: " + brokerPort);
                 portInputField.onValueChanged.Invoke(brokerPort);
             }
         }
@@ -435,7 +439,7 @@ namespace M2MqttUnity.Examples
             //Debug.Log("Received: " + obj["light"]);
 
             StoreMessage(msg);
-            if (topic == "M2MQTT_Unity/test")
+            if (topic == "example/topic")
             {
                 if (autoTest)
                 {
