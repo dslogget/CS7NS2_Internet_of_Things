@@ -19,6 +19,7 @@ static const char * LOG_MQTT = "MQTT";
 static const char * LOG_SERVO = "SERVO";
 static const char * LOG_MIC = "MIC";
 static const char * LOG_PIR = "PIR";
+static const char * LOG_ULTRA = "ULTRASONIC";
 
 static void initialiseLogs( void ) {
     esp_log_level_set( "*", ESP_LOG_WARN );
@@ -30,6 +31,7 @@ static void initialiseLogs( void ) {
     esp_log_level_set( LOG_SERVO, ESP_LOG_INFO );
     esp_log_level_set( LOG_MIC, ESP_LOG_INFO );
     esp_log_level_set( LOG_PIR, ESP_LOG_INFO );
+    esp_log_level_set( LOG_ULTRA, ESP_LOG_INFO );
 }
 
 static void startTasks( void ) {
@@ -38,6 +40,7 @@ static void startTasks( void ) {
     xTaskCreatePinnedToCore( &ldrRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &microphoneTask, "microphone", 2048, NULL, 1, &microphoneTaskHandle, 1 );
     xTaskCreatePinnedToCore( &PIRTask, "pir", 2048, NULL, 1, &PIRTaskHandle, 1 );
+    xTaskCreatePinnedToCore( &ultrasonicTask, "UltraSonic", 2048, NULL, 1, NULL, 1 );
 }
 
 static void initialisePins( void ) {

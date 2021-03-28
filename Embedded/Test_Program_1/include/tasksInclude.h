@@ -6,5 +6,6 @@ void ledState( void * params );
 void ldrRead( void * params );
 void microphoneTask( void * params );
 void PIRTask( void * params );
+void ultrasonicTask( void * params );
 
 #endif
