@@ -17,6 +17,7 @@
 #include "common.h"
 #include "pinDefs.h"
 #include "driver/rmt.h"
+#include "esp_pm.h"
 #include "jsonGen.h"
 
 #define RMT_TX_CHANNEL 1 /* RMT channel for transmitter */
@@ -34,13 +35,13 @@
 #define PIN_ECHO PIN_ULTRA_ECHO
 
 static const char * LOG_ULTRA = "ULTRASONIC";
-//static const char * const TOPIC = "homeAutomation/ULTRASONIC1";
+static const char * const TOPIC = "homeAutomation/ULTRASONIC1";
 
 const char * JSON_1FLOAT = JSON_FORMAT_BUILDER( 1, JSON_FLOAT );
 
 static void HCSR04_tx_init()
 {
-    rmt_config_t rmt_tx;
+    rmt_config_t rmt_tx = {0};
     rmt_tx.channel = RMT_TX_CHANNEL;
     rmt_tx.gpio_num = RMT_TX_GPIO_NUM;
     rmt_tx.mem_block_num = 1;
@@ -59,7 +60,7 @@ static void HCSR04_tx_init()
 
 static void HCSR04_rx_init()
 {
-    rmt_config_t rmt_rx;
+    rmt_config_t rmt_rx = {0};
     rmt_rx.channel = RMT_RX_CHANNEL;
     rmt_rx.gpio_num = RMT_RX_GPIO_NUM;
     rmt_rx.clk_div = RMT_CLK_DIV;
@@ -96,28 +97,28 @@ void ultrasonicTask( void * params )
     while( 1 )
     {   
         distanceAvg = 0;
-        BaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
-        ESP_LOGI( LOG_ULTRA, "Watermark: %u", uxHighWaterMark);
-
+        // BaseType_t uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
+        // ESP_LOGI( LOG_ULTRA, "Watermark: %u", uxHighWaterMark);
+        // ESP_LOGI( LOG_ULTRA, "item: %d, %d; %d, %d", item.level0, item.duration0, item.level1, item.duration1);
 
         for ( int i = 0; i < 5; i++ ){
             rmt_write_items(RMT_TX_CHANNEL, &item, 1, true);
             rmt_wait_tx_done(RMT_TX_CHANNEL, portMAX_DELAY);
 
-            rmt_item32_t* item = (rmt_item32_t*)xRingbufferReceive(rb, &rx_size, 1000);
-            distance = 340.29f * ITEM_DURATION(item->duration0) / (1000 * 1000 * 2); // distance in meters
+            rmt_item32_t* itemRec = (rmt_item32_t*)xRingbufferReceive(rb, &rx_size, 1000);
+            distance = 340.29f * ITEM_DURATION(itemRec->duration0) / (1000 * 1000 * 2); // distance in meters
             distanceAvg += 100.0f * distance;
             printf("Distance is %f cm\n", distance * 100); // distance in centimeters
 
-            vRingbufferReturnItem(rb, (void*) item);
+            vRingbufferReturnItem(rb, (void*) itemRec);
             vTaskDelay(200 / portTICK_PERIOD_MS);
         }
         buf[0] = 0;
         distanceAvg = distanceAvg / 5.0f;
         ESP_LOGI( LOG_ULTRA, "Distance: %f", distanceAvg);
-        //JSON_TO_BUF( JSON_1FLOAT, 128, buf, "Ultrasonic Sensor", distanceAvg );
-        //ESP_LOGI( LOG_ULTRA, "Distance: %s", buf);
-        //esp_mqtt_client_publish( mqttClient, TOPIC, buf, 0, 1, 0 );
+        JSON_TO_BUF( JSON_1FLOAT, 128, buf, "Ultrasonic Sensor", distanceAvg );
+        ESP_LOGI( LOG_ULTRA, "Distance: %s", buf);
+        esp_mqtt_client_publish( mqttClient, TOPIC, buf, 0, 1, 0 );
         vTaskDelay(20000 / portTICK_PERIOD_MS);
     }
 
