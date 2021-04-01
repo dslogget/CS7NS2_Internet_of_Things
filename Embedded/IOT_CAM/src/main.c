@@ -95,6 +95,7 @@ char t_filename[41] = "";
 
 bool buttonPressedDown = false;
 bool buttonTrigger = false;
+bool remoteTrigger = false;
 bool urlTrigger = false;
 
 /**
@@ -245,7 +246,10 @@ void subscribe_callback_handler(AWS_IoT_Client *pClient, char *topicName, uint16
     } else if (strcmp(t_topicName, "esp32/sub/data") == 0) {
         ESP_LOGI(TAG, "Detected results: %s", t_payload);
         gpio_set_level(get_led_to_turn(t_payload), 1);
-    } 
+    } else if (strcmp(t_topicName, "homeAutomation/CAMERA1") == 0) {
+        ESP_LOGI(TAG, "Triggered from cloud");
+        remoteTrigger = true;
+    }
 
     free(t_topicName);
     free(t_payload);
@@ -376,8 +380,17 @@ void aws_mqtt_task(void *param) {
     const char *TOPIC_PUB_DATA = "esp32/pub/data";
     const int TOPIC_PUB_DATA_LEN = strlen(TOPIC_PUB_DATA);
 
-    ESP_LOGI(TAG, "Subscribing...");
+    ESP_LOGI(TAG, "Subscribing to sub...");
     rc = aws_iot_mqtt_subscribe(&client, TOPIC_SUB, TOPIC_SUB_LEN, QOS0, subscribe_callback_handler, NULL);
+    if(SUCCESS != rc) {
+        ESP_LOGE(TAG, "Error subscribing : %d ", rc);
+        abort();
+    }
+
+    const char * TOPIC_TRIGGER = "homeAutomation/CAMERA1";
+    const int TOPIC_TRIGGER_LENGTH = strlen(TOPIC_TRIGGER);
+    ESP_LOGI(TAG, "Subscribing to trigger...");
+    rc = aws_iot_mqtt_subscribe(&client, TOPIC_TRIGGER, TOPIC_TRIGGER_LENGTH, QOS0, subscribe_callback_handler, NULL);
     if(SUCCESS != rc) {
         ESP_LOGE(TAG, "Error subscribing : %d ", rc);
         abort();
@@ -392,7 +405,8 @@ void aws_mqtt_task(void *param) {
             continue;
         }
 
-        if (buttonTrigger) {
+        if (buttonTrigger||remoteTrigger) {
+            ESP_LOGI(TAG, "Start trigger %d, %d", buttonTrigger, remoteTrigger );
             sprintf(cPayload, "{\"id\": \"%s\"}",  CONFIG_AWS_EXAMPLE_CLIENT_ID);
             paramsQOS0.qos = QOS0;
             paramsQOS0.payload = (void *) cPayload;
@@ -401,15 +415,19 @@ void aws_mqtt_task(void *param) {
 
             ESP_LOGI(TAG, "Stack remaining for task '%s' is %d bytes", pcTaskGetTaskName(NULL), uxTaskGetStackHighWaterMark(NULL));
             rc = aws_iot_mqtt_publish(&client, TOPIC_PUB_URL, TOPIC_PUB_URL_LEN, &paramsQOS0);
-
+            ESP_LOGI(TAG, "Published");
+            
             if (rc == MQTT_REQUEST_TIMEOUT_ERROR) {
                 ESP_LOGW(TAG, "QOS0 publish ack not received.");
                 rc = SUCCESS;
             }
             buttonTrigger = false;
+            remoteTrigger = false;
+            ESP_LOGI(TAG, "End trigger");
         }
 
         if (urlTrigger) {
+            ESP_LOGI(TAG, "URL Trigger");
             sprintf(cPayload, "{\"id\": \"%s\", \"payload\": \"%s\"}", CONFIG_AWS_EXAMPLE_CLIENT_ID, t_filename);
             paramsQOS0.qos = QOS0;
             paramsQOS0.payload = (void *) cPayload;
@@ -429,7 +447,7 @@ void aws_mqtt_task(void *param) {
         vTaskDelay(5000 / portTICK_RATE_MS);
     }
 
-    ESP_LOGE(TAG, "An error occurred in the main loop.");
+    ESP_LOGE(TAG, "An error occurred in the main loop. %d", rc);
     abort();
 }
 
