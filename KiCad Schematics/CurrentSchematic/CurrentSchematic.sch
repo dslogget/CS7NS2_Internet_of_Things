@@ -382,17 +382,6 @@ Wire Notes Line
 Text GLabel 6250 3400 2    50   Input ~ 0
 PIR
 $Comp
-L power:+5V #PWR?
-U 1 1 60643D76
-P 7500 5050
-F 0 "#PWR?" H 7500 4900 50  0001 C CNN
-F 1 "+5V" H 7515 5178 50  0000 C BNN
-F 2 "" H 7500 5050 50  0001 C CNN
-F 3 "" H 7500 5050 50  0001 C CNN
-	1    7500 5050
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:Conn_01x03_Male J?
 U 1 1 60643D7C
 P 8350 5150
@@ -440,7 +429,7 @@ Wire Wire Line
 	8000 4850 7750 4850
 Wire Wire Line
 	7750 4850 7750 4900
-Text GLabel 6250 4100 2    50   Output ~ 0
+Text GLabel 5000 3000 0    50   Input ~ 0
 Water
 $Comp
 L Connector:Conn_01x04_Male J?
@@ -558,4 +547,17 @@ Wire Notes Line
 	4200 6400 1800 6400
 Wire Notes Line
 	1800 6400 1800 4600
+$Comp
+L power:+3V3 #PWR?
+U 1 1 6069BDBB
+P 7500 5050
+AR Path="/6037F47C/6069BDBB" Ref="#PWR?"  Part="1" 
+AR Path="/6069BDBB" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 7500 4900 50  0001 C CNN
+F 1 "+3V3" H 7515 5223 50  0000 C CNN
+F 2 "" H 7500 5050 50  0001 C CNN
+F 3 "" H 7500 5050 50  0001 C CNN
+	1    7500 5050
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
