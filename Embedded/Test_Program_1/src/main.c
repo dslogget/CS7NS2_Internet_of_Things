@@ -14,6 +14,7 @@
 static const char * LOG_MISC = "MISC";
 static const char * LOG_LED = "LED";
 static const char * LOG_LDR = "LDR";
+static const char * LOG_WATER = "WATER";
 static const char * LOG_WIFI = "WIFI";
 static const char * LOG_MQTT = "MQTT";
 static const char * LOG_SERVO = "SERVO";
@@ -32,12 +33,14 @@ static void initialiseLogs( void ) {
     esp_log_level_set( LOG_MIC, ESP_LOG_INFO );
     esp_log_level_set( LOG_PIR, ESP_LOG_INFO );
     esp_log_level_set( LOG_ULTRA, ESP_LOG_INFO );
+    esp_log_level_set( LOG_WATER, ESP_LOG_INFO );
 }
 
 static void startTasks( void ) {
     // xTaskCreatePinnedToCore( &ledState, "ledState", 2048, NULL, 1, &ledStateTaskHandle, 1 );
     // xTaskCreatePinnedToCore( &blinkLED, "blinkLED", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &ldrRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
+    xTaskCreatePinnedToCore( &waterRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &microphoneTask, "microphone", 2048, NULL, 1, &microphoneTaskHandle, 1 );
     xTaskCreatePinnedToCore( &PIRTask, "pir", 2048, NULL, 1, &PIRTaskHandle, 1 );
     xTaskCreatePinnedToCore( &ultrasonicTask, "UltraSonic", 2048, NULL, 1, NULL, 1 );
@@ -46,6 +49,7 @@ static void startTasks( void ) {
 static void initialisePins( void ) {
     adc1_config_width( ADC_WIDTH_BIT_11 );
     adc1_config_channel_atten( CHANNEL_LDR, ADC_ATTEN_DB_11 );
+    adc1_config_channel_atten( CHANNEL_WATER, ADC_ATTEN_DB_11 );
     // Characterize ADC
     adc1_chars = calloc(1, sizeof(esp_adc_cal_characteristics_t));
     esp_adc_cal_characterize( ADC_UNIT_1, ADC_ATTEN_11db,
