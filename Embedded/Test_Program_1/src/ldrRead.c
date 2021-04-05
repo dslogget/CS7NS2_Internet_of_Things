@@ -9,8 +9,6 @@ const char * JSONmV = JSON_FORMAT_BUILDER( 1, "%dmV" );
 
 static const char * LOG_LDR = "LDR";
 
-static const char * const TOPIC = "homeAutomation/LDR1";
-
 void ldrRead( void * params ) {
     uint32_t adc_reading;
     char buf[ 128 ] =  { 0 };
@@ -24,7 +22,7 @@ void ldrRead( void * params ) {
         adc_reading /= NUMSAMPLES;
         uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, adc1_chars);
         ESP_LOGI( LOG_LDR, "Raw: %d\tVoltage: %dmV\n", adc_reading, voltage );
-        JSON_TO_BUF( JSONmV, 128, buf, "Voltage", voltage );
+        JSON_TO_BUF( JSONmV, 128, buf, "LDR1", voltage );
         ESP_LOGI( LOG_LDR, "JSON: %s", buf );
         esp_mqtt_client_publish( mqttClient, TOPIC, buf, 0, 1, 0 );
         vTaskDelay( 30 * 1000 / portTICK_PERIOD_MS );

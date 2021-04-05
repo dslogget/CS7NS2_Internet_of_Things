@@ -1,4 +1,4 @@
-// Example from https://www.esp32.com/viewtopic.php?t=5787
+// Example from https://www.esp32.com/viewtopic.php?t=5787 modified
 
 // #include <stdio.h>
 // #include <string.h>
@@ -35,7 +35,6 @@
 #define PIN_ECHO PIN_ULTRA_ECHO
 
 static const char * LOG_ULTRA = "ULTRASONIC";
-static const char * const TOPIC = "homeAutomation/ULTRASONIC1";
 
 const char * JSON_1FLOAT = JSON_FORMAT_BUILDER( 1, JSON_FLOAT );
 
@@ -116,7 +115,7 @@ void ultrasonicTask( void * params )
         buf[0] = 0;
         distanceAvg = distanceAvg / 5.0f;
         ESP_LOGI( LOG_ULTRA, "Distance: %f", distanceAvg);
-        JSON_TO_BUF( JSON_1FLOAT, 128, buf, "Ultrasonic Sensor", distanceAvg );
+        JSON_TO_BUF( JSON_1FLOAT, 128, buf, "ULTRASONIC1", distanceAvg );
         ESP_LOGI( LOG_ULTRA, "Distance: %s", buf);
         esp_mqtt_client_publish( mqttClient, TOPIC, buf, 0, 1, 0 );
         vTaskDelay(20000 / portTICK_PERIOD_MS);
