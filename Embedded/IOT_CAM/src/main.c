@@ -245,6 +245,13 @@ void subscribe_callback_handler(AWS_IoT_Client *pClient, char *topicName, uint16
         free(t_params);
     } else if (strcmp(t_topicName, "esp32/sub/data") == 0) {
         ESP_LOGI(TAG, "Detected results: %s", t_payload);
+        IoT_Publish_Message_Params paramsQOS1;
+        paramsQOS1.qos = QOS1;
+        paramsQOS1.payload = (void *) params->payload;
+        paramsQOS1.isRetained = 0;
+        paramsQOS1.payloadLen = params->payloadLen;
+
+        IoT_Error_t rc = aws_iot_mqtt_publish( pClient, "homeAutomation/RECOGRES", strlen("homeAutomation/RECOGRES"), &paramsQOS1 );
         gpio_set_level(get_led_to_turn(t_payload), 1);
     } else if (strcmp(t_topicName, "homeAutomation/CAMERA1") == 0) {
         ESP_LOGI(TAG, "Triggered from cloud");
