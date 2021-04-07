@@ -28,8 +28,8 @@ void servoInit( void ) {
 }
 
 void servoSetAngle( uint32_t degrees ) {
-    ESP_LOGI( LOG_SERVO, "Command to set servo to %d degrees", degrees );
-    uint32_t pulseLength = servoDegreesToPulseLength( degrees );
+    ESP_LOGI( LOG_SERVO, "Command to set servo to %d degrees", degrees > 180 ? 180 : degrees );
+    uint32_t pulseLength = servoDegreesToPulseLength( degrees > 180 ? 180 : degrees );
     ESP_LOGI( LOG_SERVO, "Pulse length %d", pulseLength );
     ESP_ERROR_CHECK( mcpwm_set_duty_in_us( SERVO_MCPWM_UNIT, SERVO_MCPWM_TIMER, SERVO_MCPWM_GEN, pulseLength ) );
 }

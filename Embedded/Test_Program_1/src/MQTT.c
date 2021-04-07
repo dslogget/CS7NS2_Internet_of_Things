@@ -18,7 +18,7 @@ static const char * LOG_MQTT = "MQTT";
 
 
 static void dataRecvHandler( char * topic, int topic_len, char * data, int data_len ) {
-    char degreesToConvert[ 4 ] = { 0 };
+    char degreesToConvert[ 100 ] = { 0 };
     if ( strncmp( "homeAutomation/LED1", topic, topic_len ) == 0 ) {
         if ( data_len > 0 && data[0] == '1' ) {
             gpio_set_level( PIN_LED, 1 );
@@ -33,10 +33,11 @@ static void dataRecvHandler( char * topic, int topic_len, char * data, int data_
         }
     } else if ( strncmp( "homeAutomation/SERVO1", topic, topic_len ) == 0 ) {
         if ( data_len > 0 ) {
-            for ( int i = 0; i < 4 && i < data_len; i++ ) {
+            for ( int i = 0; i < 99 && i < data_len; i++ ) {
                 degreesToConvert[ i ] = data[ i ];
             }
-            servoSetAngle( strtoul( degreesToConvert, NULL, 10 ) );
+            char * end = &degreesToConvert[99];
+            servoSetAngle( strtof( degreesToConvert, &end ) * 180   );
         }
     } 
 }
