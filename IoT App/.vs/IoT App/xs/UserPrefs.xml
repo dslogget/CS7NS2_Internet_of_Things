@@ -1,16 +1,26 @@
 ﻿<Properties StartupConfiguration="{D4E68B8C-3752-9C84-1E61-D60872B6B14D}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/M2Mqtt/MqttClient.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Cognito.cs">
     <Files>
-      <File FileName="Assets/M2MqttUnity/Scripts/M2MqttUnityClient.cs" Line="336" Column="43" />
-      <File FileName="Assets/Scripts/MQTTProtocol.cs" Line="447" Column="34" />
-      <File FileName="Assets/M2Mqtt/MqttClient.cs" Line="26" Column="4" />
-      <File FileName="Assets/M2MqttUnity/Scripts/BrokerSettings.cs" Line="1" Column="1" />
-      <File FileName="Assets/M2Mqtt/Net/MqttNetworkChannel.cs" Line="204" Column="18" />
+      <File FileName="Assets/Scripts/Cognito.cs" Line="250" Column="10" />
+      <File FileName="Assets/Scripts/CredentialsManager.cs" Line="23" Column="71" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="IoT App" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="Cognito.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d78788aa-44d2-48a4-921a-85ab95ad7d48" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8dff95a9-d498-4ff1-9c52-ddd591f2a7ca" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

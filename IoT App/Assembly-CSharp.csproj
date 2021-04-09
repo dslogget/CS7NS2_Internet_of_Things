@@ -63,58 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets/Examples/CognitoSyncManagerSample.cs" />
     <Compile Include="Assets/JSON/JSONObject.cs" />
     <Compile Include="Assets/JSON/VectorTemplates.cs" />
-    <Compile Include="Assets/M2Mqtt/Exceptions/MqttClientException.cs" />
-    <Compile Include="Assets/M2Mqtt/Exceptions/MqttCommunicationException.cs" />
-    <Compile Include="Assets/M2Mqtt/Exceptions/MqttConnectionException.cs" />
-    <Compile Include="Assets/M2Mqtt/Exceptions/MqttTimeoutException.cs" />
-    <Compile Include="Assets/M2Mqtt/IMqttNetworkChannel.cs" />
-    <Compile Include="Assets/M2Mqtt/Internal/InternalEvent.cs" />
-    <Compile Include="Assets/M2Mqtt/Internal/MsgInternalEvent.cs" />
-    <Compile Include="Assets/M2Mqtt/Internal/MsgPublishedInternalEvent.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgBase.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgConnack.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgConnect.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgConnectEventArgs.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgContext.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgDisconnect.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPingReq.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPingResp.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPuback.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPubcomp.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPublish.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPublishEventArgs.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPublishedEventArgs.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPubrec.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgPubrel.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgSuback.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgSubscribe.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgSubscribeEventArgs.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgSubscribedEventArgs.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgUnsuback.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgUnsubscribe.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgUnsubscribeEventArgs.cs" />
-    <Compile Include="Assets/M2Mqtt/Messages/MqttMsgUnsubscribedEventArgs.cs" />
-    <Compile Include="Assets/M2Mqtt/MqttClient.cs" />
-    <Compile Include="Assets/M2Mqtt/MqttSecurity.cs" />
-    <Compile Include="Assets/M2Mqtt/MqttSettings.cs" />
-    <Compile Include="Assets/M2Mqtt/Net/Fx.cs" />
-    <Compile Include="Assets/M2Mqtt/Net/MqttNetworkChannel.cs" />
-    <Compile Include="Assets/M2Mqtt/Properties/AssemblyInfo.cs" />
-    <Compile Include="Assets/M2Mqtt/Session/MqttBrokerSession.cs" />
-    <Compile Include="Assets/M2Mqtt/Session/MqttClientSession.cs" />
-    <Compile Include="Assets/M2Mqtt/Session/MqttSession.cs" />
-    <Compile Include="Assets/M2Mqtt/Utility/QueueExtension.cs" />
-    <Compile Include="Assets/M2Mqtt/Utility/Trace.cs" />
-    <Compile Include="Assets/M2Mqtt/WinRT/Fx.cs" />
-    <Compile Include="Assets/M2Mqtt/WinRT/Hashtable.cs" />
-    <Compile Include="Assets/M2Mqtt/WinRT/MqttNetworkChannel.cs" />
-    <Compile Include="Assets/M2Mqtt/WinRT/Queue.cs" />
-    <Compile Include="Assets/M2MqttUnity/Examples/Scripts/M2MqttUnityTest.cs" />
-    <Compile Include="Assets/M2MqttUnity/Scripts/BrokerSettings.cs" />
-    <Compile Include="Assets/M2MqttUnity/Scripts/M2MqttUnityClient.cs" />
     <Compile Include="Assets/Modern UI Pack/Scripts/Animated Icon/AnimatedIconHandler.cs" />
     <Compile Include="Assets/Modern UI Pack/Scripts/Button/ButtonManager.cs" />
     <Compile Include="Assets/Modern UI Pack/Scripts/Button/ButtonManagerBasic.cs" />
@@ -186,41 +136,36 @@
     <Compile Include="Assets/Modern UI Pack/Scripts/Window/WindowManager.cs" />
     <Compile Include="Assets/Modern UI Pack/Scripts/Window/WindowManagerEditor.cs" />
     <Compile Include="Assets/Scripts/ButtonManager.cs" />
-    <Compile Include="Assets/Scripts/MQTTProtocol.cs" />
+    <Compile Include="Assets/Scripts/Cognito.cs" />
+    <Compile Include="Assets/Scripts/CredentialsManager.cs" />
+    <Compile Include="Assets/Scripts/Events.cs" />
+    <Compile Include="Assets/Scripts/EventsManager.cs" />
     <Compile Include="Assets/Scripts/SceneManager.cs" />
     <Compile Include="Assets/Scripts/ScrollView.cs" />
     <Compile Include="Assets/Scripts/TabManager.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMPro.cginc" />
+     <None Include="Assets/M2Mqtt.Net.dll" />
      <None Include="Assets/JSON/readme.txt" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF-Mobile Overlay.shader" />
-     <None Include="Assets/AWSSDK/AWSSDK.SecurityToken.dll" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_Bitmap.shader" />
-     <None Include="Assets/M2Mqtt/epl-v10.txt" />
      <None Include="Assets/link.xml" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets/Modern UI Pack/Read Me.txt" />
-     <None Include="Assets/Examples/License.txt" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF-Surface.shader" />
      <None Include="Assets/TextMesh Pro/Sprites/EmojiOne Attribution.txt" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_Bitmap-Custom-Atlas.shader" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF.shader" />
-     <None Include="Assets/AWSSDK/AWSSDK.Core.dll" />
      <None Include="Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMPro_Surface.cginc" />
-     <None Include="Assets/M2Mqtt/edl-v10.txt" />
      <None Include="Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt" />
-     <None Include="Assets/AWSSDK/AWSSDK.CognitoSync.dll" />
-     <None Include="Assets/M2Mqtt/M2Mqtt_LICENSE.txt" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF-Mobile Masking.shader" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF Overlay.shader" />
-     <None Include="Assets/AWSSDK/AWSSDK.IdentityManagement.dll" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_Bitmap-Mobile.shader" />
      <None Include="Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF-Mobile.shader" />
-     <None Include="Assets/AWSSDK/AWSSDK.CognitoIdentity.dll" />
      <None Include="Assets/TextMesh Pro/Resources/Shaders/TMP_Sprite.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
@@ -483,20 +428,29 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>/Applications/Unity/Hub/Editor/2020.1.0b4/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="M2Mqtt.Net">
+      <HintPath>Assets/M2Mqtt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="AWSSDK.CognitoIdentity">
-      <HintPath>Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
+      <HintPath>Assets/Plugins/AWSSDK.CognitoIdentity.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.Core">
-      <HintPath>Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
+      <HintPath>Assets/Plugins/AWSSDK.Core.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.SecurityToken">
-      <HintPath>Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
+      <HintPath>Assets/Plugins/AWSSDK.SecurityToken.dll</HintPath>
     </Reference>
-    <Reference Include="AWSSDK.CognitoSync">
-      <HintPath>Assets/AWSSDK/AWSSDK.CognitoSync.dll</HintPath>
+    <Reference Include="AWSSDK.CognitoIdentityProvider">
+      <HintPath>Assets/Plugins/AWSSDK.CognitoIdentityProvider.dll</HintPath>
     </Reference>
-    <Reference Include="AWSSDK.IdentityManagement">
-      <HintPath>Assets/AWSSDK/AWSSDK.IdentityManagement.dll</HintPath>
+    <Reference Include="Amazon.Extensions.CognitoAuthentication">
+      <HintPath>Assets/Plugins/Amazon.Extensions.CognitoAuthentication.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets/Plugins/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Kinesis">
+      <HintPath>Assets/Plugins/AWSSDK.Kinesis.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>/Applications/Unity/Hub/Editor/2020.1.0b4/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
