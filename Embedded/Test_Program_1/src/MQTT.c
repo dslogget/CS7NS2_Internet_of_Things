@@ -2,6 +2,7 @@
 #include "globalVariables.h"
 #include "pinDefs.h"
 #include "Credentials.h"
+#include "generalHelpers.h"
 
 
 
@@ -17,11 +18,26 @@ static const char * LOG_MQTT = "MQTT";
 
 
 static void dataRecvHandler( char * topic, int topic_len, char * data, int data_len ) {
+    char degreesToConvert[ 100 ] = { 0 };
     if ( strncmp( "homeAutomation/LED1", topic, topic_len ) == 0 ) {
         if ( data_len > 0 && data[0] == '1' ) {
             gpio_set_level( PIN_LED, 1 );
         } else {
             gpio_set_level( PIN_LED, 0 );
+        }
+    } else if ( strncmp( "homeAutomation/BUZZ1", topic, topic_len ) == 0 ) {
+        if ( data_len > 0 && data[0] == '1' ) {
+            gpio_set_level( PIN_ACTIVEBUZZER, 1 );
+        } else {
+            gpio_set_level( PIN_ACTIVEBUZZER, 0 );
+        }
+    } else if ( strncmp( "homeAutomation/SERVO1", topic, topic_len ) == 0 ) {
+        if ( data_len > 0 ) {
+            for ( int i = 0; i < 99 && i < data_len; i++ ) {
+                degreesToConvert[ i ] = data[ i ];
+            }
+            char * end = &degreesToConvert[99];
+            servoSetAngle( strtof( degreesToConvert, &end ) * 180   );
         }
     } 
 }
@@ -38,6 +54,12 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
             //ESP_LOGI( LOG_MQTT, "sent publish successful, msg_id=%d", msg_id );
 
             msg_id = esp_mqtt_client_subscribe( client, "homeAutomation/LED1", 1 );
+            ESP_LOGI( LOG_MQTT, "sent subscribe successful, msg_id=%d", msg_id );
+
+            msg_id = esp_mqtt_client_subscribe( client, "homeAutomation/SERVO1", 1 );
+            ESP_LOGI( LOG_MQTT, "sent subscribe successful, msg_id=%d", msg_id );
+
+            msg_id = esp_mqtt_client_subscribe( client, "homeAutomation/BUZZ1", 1 );
             ESP_LOGI( LOG_MQTT, "sent subscribe successful, msg_id=%d", msg_id );
 
             // msg_id = esp_mqtt_client_unsubscribe( client, "/topic/qos1" );

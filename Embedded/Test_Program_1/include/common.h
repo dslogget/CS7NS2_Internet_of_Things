@@ -23,10 +23,14 @@
 
 #include "mqtt_client.h"
 
+#include "pinDefs.h"
+
 
 #include <stdbool.h>
 
 #define DEFAULT_VREF 1100
 
+#define SERVO_MIN_DEGREES 0
+#define SERVO_MAX_DEGREES 180
 
 #endif

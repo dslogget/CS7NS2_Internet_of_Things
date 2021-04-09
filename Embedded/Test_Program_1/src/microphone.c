@@ -7,15 +7,13 @@ const char * JSON_1String = JSON_FORMAT_BUILDER( 1, "Triggered" );
 
 static const char * LOG_MIC = "MIC";
 
-static const char * const TOPIC = "homeAutomation/MICROPHONE1";
-
 void microphoneTask( void * params ) {
     uint32_t notification;
     ESP_LOGI( LOG_MIC, "Microphone task started" );
     char buf[ 128 ];
 
     while ( 1 ) {
-        JSON_TO_BUF( JSON_1String, 128, buf, "Microphone" );
+        JSON_TO_BUF( JSON_1String, 128, buf, "MIC1" );
         xTaskNotifyWait( ULONG_MAX, ULONG_MAX, NULL, 0 );
         xTaskNotifyWait( ULONG_MAX,    /* Clear bits on entry. */
                          ULONG_MAX,        /* Clear all bits on exit. */

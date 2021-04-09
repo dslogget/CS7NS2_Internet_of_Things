@@ -4,6 +4,7 @@
 #define VARIABLES_IMPL
 #include "globalVariables.h"
 #include "tasksInclude.h"
+#include "generalHelpers.h"
 #include "WiFiHelper.h"
 #include "MQTTHelper.h"
 #include "nvs_flash.h"
@@ -13,9 +14,13 @@
 static const char * LOG_MISC = "MISC";
 static const char * LOG_LED = "LED";
 static const char * LOG_LDR = "LDR";
+static const char * LOG_WATER = "WATER";
 static const char * LOG_WIFI = "WIFI";
 static const char * LOG_MQTT = "MQTT";
+static const char * LOG_SERVO = "SERVO";
 static const char * LOG_MIC = "MIC";
+static const char * LOG_PIR = "PIR";
+static const char * LOG_ULTRA = "ULTRASONIC";
 
 static void initialiseLogs( void ) {
     esp_log_level_set( "*", ESP_LOG_WARN );
@@ -24,19 +29,27 @@ static void initialiseLogs( void ) {
     esp_log_level_set( LOG_LDR, ESP_LOG_INFO );
     esp_log_level_set( LOG_WIFI, ESP_LOG_INFO );
     esp_log_level_set( LOG_MQTT, ESP_LOG_INFO );
+    esp_log_level_set( LOG_SERVO, ESP_LOG_INFO );
     esp_log_level_set( LOG_MIC, ESP_LOG_INFO );
+    esp_log_level_set( LOG_PIR, ESP_LOG_INFO );
+    esp_log_level_set( LOG_ULTRA, ESP_LOG_INFO );
+    esp_log_level_set( LOG_WATER, ESP_LOG_INFO );
 }
 
 static void startTasks( void ) {
     // xTaskCreatePinnedToCore( &ledState, "ledState", 2048, NULL, 1, &ledStateTaskHandle, 1 );
     // xTaskCreatePinnedToCore( &blinkLED, "blinkLED", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &ldrRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
+    xTaskCreatePinnedToCore( &waterRead, "ldrRead", 2048, NULL, 1, NULL, 1 );
     xTaskCreatePinnedToCore( &microphoneTask, "microphone", 2048, NULL, 1, &microphoneTaskHandle, 1 );
+    xTaskCreatePinnedToCore( &PIRTask, "pir", 2048, NULL, 1, &PIRTaskHandle, 1 );
+    xTaskCreatePinnedToCore( &ultrasonicTask, "UltraSonic", 2048, NULL, 1, NULL, 1 );
 }
 
 static void initialisePins( void ) {
     adc1_config_width( ADC_WIDTH_BIT_11 );
     adc1_config_channel_atten( CHANNEL_LDR, ADC_ATTEN_DB_11 );
+    adc1_config_channel_atten( CHANNEL_WATER, ADC_ATTEN_DB_11 );
     // Characterize ADC
     adc1_chars = calloc(1, sizeof(esp_adc_cal_characteristics_t));
     esp_adc_cal_characterize( ADC_UNIT_1, ADC_ATTEN_11db,
@@ -44,7 +57,7 @@ static void initialisePins( void ) {
                               DEFAULT_VREF,
                               adc1_chars );
 
-    gpio_config_t config = { GPIO_SEL_4,
+    gpio_config_t config = { GPIO_SEL_4 | GPIO_SEL_5,
                              GPIO_MODE_OUTPUT,
                              GPIO_PULLUP_DISABLE,
                              GPIO_PULLDOWN_DISABLE,
@@ -52,7 +65,7 @@ static void initialisePins( void ) {
 
     ESP_ERROR_CHECK( gpio_config( &config ) );
 
-    config.pin_bit_mask = GPIO_SEL_17;
+    config.pin_bit_mask = GPIO_SEL_17 | GPIO_SEL_18;
     config.mode = GPIO_MODE_INPUT;
     config.intr_type = GPIO_INTR_POSEDGE;
     ESP_ERROR_CHECK( gpio_config( &config ) );
@@ -62,6 +75,7 @@ static void initialisePins( void ) {
     ESP_ERROR_CHECK( gpio_install_isr_service( 0 ) );
 
     ESP_ERROR_CHECK( gpio_isr_handler_add( PIN_MICROPHONE, microphoneISR, (void*) PIN_MICROPHONE ) );
+    ESP_ERROR_CHECK( gpio_isr_handler_add( PIN_PIR, PIRISR, (void*) PIN_MICROPHONE ) );
 }
 
 static void setupQueues( void ) { 
@@ -100,11 +114,13 @@ void app_main() {
 
     setupQueues();
 
-    initialisePins();
-
-    setupTimes();
-    
     startTasks();
+
+    initialisePins();
+    
+    servoInit();
+
+    setupTimes(); 
 
     fflush( stdout );
     vTaskDelete( NULL );
