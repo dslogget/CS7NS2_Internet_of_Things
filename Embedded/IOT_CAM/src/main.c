@@ -18,6 +18,7 @@
 #include "esp_log.h"
 #include "esp_vfs_fat.h"
 #include "driver/sdmmc_host.h"
+#include "esp_sntp.h"
 
 #include "nvs.h"
 #include "nvs_flash.h"
@@ -36,6 +37,10 @@
 #include "camera-webserver.h"
 
 #include "Credentials.h"
+#define VARIABLES_IMPL
+#include "jsonGen.h"
+
+const char * JSONFORMAT = JSON_FORMAT_BUILDER(1, JSON_STRING);
 
 /* The examples use simple WiFi configuration that you can set via
    'make menuconfig'.
@@ -244,14 +249,17 @@ void subscribe_callback_handler(AWS_IoT_Client *pClient, char *topicName, uint16
         free(t_url);
         free(t_params);
     } else if (strcmp(t_topicName, "esp32/sub/data") == 0) {
+        char buf[256] = {0};
         ESP_LOGI(TAG, "Detected results: %s", t_payload);
+        JSON_TO_BUF( JSONFORMAT, 256, buf, "RECOGRES", t_payload );
+
         IoT_Publish_Message_Params paramsQOS1;
         paramsQOS1.qos = QOS1;
-        paramsQOS1.payload = (void *) params->payload;
+        paramsQOS1.payload = (void *) buf ;
         paramsQOS1.isRetained = 0;
-        paramsQOS1.payloadLen = params->payloadLen;
+        paramsQOS1.payloadLen = strlen(buf);
 
-        IoT_Error_t rc = aws_iot_mqtt_publish( pClient, "homeAutomation/RECOGRES", strlen("homeAutomation/RECOGRES"), &paramsQOS1 );
+        IoT_Error_t rc = aws_iot_mqtt_publish( pClient, "homeAutomation/ESP", strlen("homeAutomation/ESP"), &paramsQOS1 );
         gpio_set_level(get_led_to_turn(t_payload), 1);
     } else if (strcmp(t_topicName, "homeAutomation/CAMERA1") == 0) {
         ESP_LOGI(TAG, "Triggered from cloud");
@@ -573,6 +581,16 @@ void app_main()
 
     init_app();
     init_wifi();
+    ESP_ERROR_CHECK( esp_read_mac( MAC_ADDRESS, 0 ) );
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    sntp_setservername(0, "pool.ntp.org");
+    sntp_init();
+
+    int retryCounter = 10;
+
+    while ( retryCounter && sntp_get_sync_status() != SNTP_SYNC_STATUS_COMPLETED ) {
+        vTaskDelay( 1000 / portTICK_PERIOD_MS );
+    }
 
     esp32_camera_init();
 
