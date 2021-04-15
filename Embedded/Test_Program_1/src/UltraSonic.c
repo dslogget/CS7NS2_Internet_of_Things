@@ -36,7 +36,7 @@
 
 static const char * LOG_ULTRA = "ULTRASONIC";
 
-const char * JSON_1FLOAT = JSON_FORMAT_BUILDER( 1, JSON_FLOAT );
+const char * JSON_CM = JSON_FORMAT_BUILDER( 1, "%.1fcm" );
 
 static void HCSR04_tx_init()
 {
@@ -115,7 +115,7 @@ void ultrasonicTask( void * params )
         buf[0] = 0;
         distanceAvg = distanceAvg / 5.0f;
         ESP_LOGI( LOG_ULTRA, "Distance: %f", distanceAvg);
-        JSON_TO_BUF( JSON_1FLOAT, 128, buf, "ULTRASONIC1", distanceAvg );
+        JSON_TO_BUF( JSON_CM, 128, buf, "ULTRASONIC1", distanceAvg );
         ESP_LOGI( LOG_ULTRA, "Distance: %s", buf);
         esp_mqtt_client_publish( mqttClient, TOPIC, buf, 0, 1, 0 );
         vTaskDelay(20000 / portTICK_PERIOD_MS);
